@@ -8,7 +8,7 @@ import (
 )
 
 type Product struct {
-	//struct composition
+	//type struct composition
 	entities.Base
 	Name string `json:"name"`
 }
