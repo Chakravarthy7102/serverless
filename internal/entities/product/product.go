@@ -16,6 +16,8 @@ func (p *Product) InterfaceToModal(data interface{}) (instance Product, err erro
 
 }
 
+//
+
 //TODO
 func (p *Product) GetFilterId() map[string]interface{} {
 
@@ -27,4 +29,12 @@ func (p *Product) TableName() string {
 
 func (p *Product) Bytes() ([]byte, error) {
 	return json.Marshal(p)
+}
+
+func (p *Product) GetMap() map[string]interface{} {
+
+}
+
+func ParseDynamoAttributeToStruct() {
+
 }
