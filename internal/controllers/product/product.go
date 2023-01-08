@@ -3,8 +3,8 @@ package product
 import (
 	"time"
 
-	"github.com/Chakravarthy7102/serverless/internal/entities/product"
-	"github.com/Chakravarthy7102/serverless/internal/handlers/product"
+	product "github.com/Chakravarthy7102/serverless/internal/entities/product"
+	product "github.com/Chakravarthy7102/serverless/internal/handlers/product"
 	"github.com/Chakravarthy7102/serverless/internal/repository/adapter"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"github.com/goolge/uuid"
@@ -87,7 +87,24 @@ func (c *Controller) Create(entity *product.Product) (ID uuid.UUID, err error) {
 	return entity.ID, err
 }
 
-func (c *Controller) Update(id uuid.UUID, entity *product.Product) {}
+func (c *Controller) Update(id uuid.UUID, entity *product.Product) error {
+	found, err := c.ListOne(id)
+
+	if err != nil {
+		return err
+	}
+
+	found.ID = id
+	found.UpdatedAt = time.Now()
+	found.Name = entity.Name
+	_, err = c.repository.CreateOrUpdate(found.GetMap(), entity.TableName())
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 func (c *Controller) Remove(id uuid.UUID) error {
 	entity, err := c.ListOne(id)
@@ -102,4 +119,5 @@ func (c *Controller) Remove(id uuid.UUID) error {
 		return err
 	}
 
+	return nil
 }
